@@ -107,4 +107,8 @@ public class SajHealthService {
     };
 
 
+    public void destroy() {
+        mStore.disconnectService();
+        mInstance = null;
+    }
 }

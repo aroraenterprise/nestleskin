@@ -4,6 +4,8 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,15 +20,15 @@ import com.github.mikephil.charting.charts.LineChart;
  * Activities that contain this fragment must implement the
  * {@link IFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link TrackerFragment#newInstance} factory method to
+ * Use the {@link DietFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TrackerFragment extends Fragment {
+public class DietFragment extends Fragment {
 
     private IFragmentInteractionListener mListener;
     private View mLayout;
 
-    public TrackerFragment() {
+    public DietFragment() {
         // Required empty public constructor
     }
 
@@ -37,8 +39,8 @@ public class TrackerFragment extends Fragment {
      * @return A new instance of fragment TrackerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static TrackerFragment newInstance() {
-        TrackerFragment fragment = new TrackerFragment();
+    public static DietFragment newInstance() {
+        DietFragment fragment = new DietFragment();
         Bundle args = new Bundle();
 
         fragment.setArguments(args);
@@ -57,9 +59,14 @@ public class TrackerFragment extends Fragment {
     }
 
     private void initialize() {
-        LineChart linechart = new LineChart(getActivity());
-        RelativeLayout rl = (RelativeLayout)mLayout.findViewById(R.id.dynamic_charts);
-        rl.addView(linechart);
+//        FloatingActionButton fab = (FloatingActionButton)mLayout.findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "This is a test!", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
     @Override
