@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="self.nestleskin">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="self.nestleskin">
 
     <application
         android:allowBackup="true"
@@ -13,7 +14,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ImageView"></activity>
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <uses-feature android:name="android.hardware.camera" />
         <uses-permission android:name="android.permission.CAMERA" />
@@ -21,4 +21,5 @@
         <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
         <uses-permission android:name="android.permission.INTERNET" />
     </application>
+
 </manifest>
