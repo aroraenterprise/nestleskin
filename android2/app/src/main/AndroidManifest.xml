@@ -17,12 +17,12 @@
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <provider
             android:name="android.support.v4.content.FileProvider"
-            android:authorities="self.nestleskin.fileprovider"
+            android:authorities="com.example.android.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
+                android:resource="@xml/filepaths"></meta-data>
         </provider>
     </application>
     <uses-feature android:name="android.hardware.camera" android:required="true" />
