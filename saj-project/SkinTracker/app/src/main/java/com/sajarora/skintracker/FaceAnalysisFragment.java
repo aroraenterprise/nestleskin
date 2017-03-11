@@ -1,25 +1,15 @@
 package com.sajarora.skintracker;
 
-import android.app.Activity;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.karumi.dexter.listener.single.PermissionListener;
-import com.soundcloud.android.crop.Crop;
-
-import java.io.File;
 
 
 /**
@@ -75,6 +65,14 @@ public class FaceAnalysisFragment extends Fragment {
                 launchFaceProfilerActivity();
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_NEW_FACE){
+            //add one more
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void launchFaceProfilerActivity() {
