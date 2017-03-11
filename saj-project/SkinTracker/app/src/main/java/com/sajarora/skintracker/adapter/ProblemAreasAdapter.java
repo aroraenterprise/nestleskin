@@ -37,7 +37,8 @@ public class ProblemAreasAdapter extends RecyclerView.Adapter<ProblemAreasAdapte
         ProblemImage image = images.get(position);
         holder.thumb.setImageURI(image.image);
         holder.title.setText(image.title);
-        holder.comment.setText(image.comment);
+        holder.color.setBackgroundColor(image.averageColor);
+        holder.intensity.setText(Integer.toString(image.redIntensity));
     }
 
     @Override
@@ -51,6 +52,8 @@ public class ProblemAreasAdapter extends RecyclerView.Adapter<ProblemAreasAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        public View color;
+        public TextView intensity;
         public TextView title;
         public EditText comment;
         public ImageView thumb;
@@ -58,8 +61,9 @@ public class ProblemAreasAdapter extends RecyclerView.Adapter<ProblemAreasAdapte
         public ViewHolder(View itemView) {
             super(itemView);
             title = (TextView)itemView.findViewById(R.id.text);
-            comment = (EditText)itemView.findViewById(R.id.etComments);
             thumb = (ImageView)itemView.findViewById(R.id.thumb);
+            color = itemView.findViewById(R.id.color);
+            intensity = (TextView)itemView.findViewById(R.id.colorintensity);
         }
     }
 }

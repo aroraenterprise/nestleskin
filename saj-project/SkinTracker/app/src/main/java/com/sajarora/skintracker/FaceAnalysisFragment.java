@@ -1,15 +1,28 @@
 package com.sajarora.skintracker;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.sajarora.skintracker.adapter.FaceShotsAdapter;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 
 /**
@@ -22,13 +35,41 @@ import android.view.ViewGroup;
  */
 public class FaceAnalysisFragment extends Fragment {
 
+    private LinearLayoutManager mLayoutManager;
+    private FaceShotsAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+
+    public class FaceShot {
+        public String title;
+        public Drawable image;
+        public Uri imageUri;
+        public BarDataSet dataset;
+        public BarDataSet calorieDataset;
+
+        @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+        public FaceShot(int drawabaleId, String title, BarDataSet dataset, BarDataSet calorieDataset) {
+            this.image = getActivity().getResources().getDrawable(drawabaleId, getActivity().getTheme());
+            this.title = title;
+            this.dataset = dataset;
+            this.calorieDataset = calorieDataset;
+        }
+
+        public FaceShot(Uri uri, String title, BarDataSet dataset, BarDataSet calorieDataset) {
+            this.imageUri = uri;
+            this.title = title;
+            this.dataset = dataset;
+            this.calorieDataset = calorieDataset;
+        }
+    }
+
+    FaceShot[] faceShots = new FaceShot[4];
+
     private static final String TAG = FaceAnalysisFragment.class.getSimpleName();
     private static final int REQUEST_NEW_FACE = 1001;
     private IFragmentInteractionListener mListener;
     private View mLayout;
 
     public FaceAnalysisFragment() {
-        // Required empty public constructor
     }
 
     /**
@@ -65,12 +106,49 @@ public class FaceAnalysisFragment extends Fragment {
                 launchFaceProfilerActivity();
             }
         });
+
+        faceShots[0] = new FaceShot(
+                R.drawable.ic_acne_baseline,
+                "Initial: Feb 18th, 2017",
+                generateStepData(8000, 9000, "Steps Taken"),
+                generateStepData(1600, 1700, "Calories Consumed")
+        );
+        faceShots[1] = new FaceShot(
+                R.drawable.ic_acne_week_1,
+                "Week 1: Feb 25th, 2017",
+                generateStepData(8000, 10000, "Steps Taken"),
+                generateStepData(1400, 1600, "Calories Consumed")
+        );
+        faceShots[2] = new FaceShot(
+                R.drawable.ic_acne_week_2,
+                "Week 2: March 4th, 2017",
+                generateStepData(10000, 12000, "Steps Taken"),
+                generateStepData(1400, 1600, "Calories Consumed")
+        );
+        faceShots[3] = new FaceShot(
+                R.drawable.ic_acne_final,
+                "Week 3: March 11th, 2017",
+                generateStepData(9000, 20000, "Steps Taken"),
+                generateStepData(1300, 1500, "Calories Consumed")
+        );
+
+        // Required empty public constructor
+        mRecyclerView = (RecyclerView) mLayout.findViewById(R.id.faceshots);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new FaceShotsAdapter(faceShots);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_NEW_FACE){
-            //add one more
+            Bundle bundle = data.getExtras();
+            String title = bundle.getString("Title");
+            int average = bundle.getInt("Average");
+            mAdapter.popImage(new FaceShot(R.drawable.ic_acne_baseline, title, generateStepData(12000, 150000, "Steps Taken"),
+                    generateStepData(1400, 1800, "Calories Consumed")));
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -109,5 +187,16 @@ public class FaceAnalysisFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    private BarDataSet generateStepData(int min, int max, String title){
+        Random r = new Random();
+        ArrayList<BarEntry> entries = new ArrayList<>();
+        for (float i = 0f; i < 7; i++){
+            entries.add(new BarEntry(i, r.nextInt(max - min) + min));
+        }
+        BarDataSet set = new BarDataSet(entries, title);
+        set.setColor(ColorTemplate.COLORFUL_COLORS[r.nextInt(4)], 130);
+        return set;
     }
 }

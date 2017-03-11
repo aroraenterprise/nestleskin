@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+
 public class FaceProfilerActivity extends AppCompatActivity {
 
     private static final String TAG = FaceProfilerActivity.class.getSimpleName();
@@ -97,10 +98,24 @@ public class FaceProfilerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_done:
+                Intent data = new Intent();
+
+                int average = 0;
+
+                for (ProblemImage image:
+                     mAdapter.images) {
+                    average += image.redIntensity;
+                }
+                average /= mAdapter.images.size();
+                data.putExtra("Average", average);
+                Calendar calendar = Calendar.getInstance();
+                data.putExtra("Title", String.format("%1$tA %1$tb %1$td %1$tY at %1$tI:%1$tM %1$Tp", calendar));
+                data.setData(mCurrentImage);
+                setResult(RESULT_OK, data);
+                finish();
                 return true;
             case R.id.action_reset:
                 mCurrentImage = null;
-//                thumb.setImageFromBitmap(null);
                 launchCapture();
                 return true;
         }
@@ -131,10 +146,8 @@ public class FaceProfilerActivity extends AppCompatActivity {
     }
 
     private void addImage(Uri output) {
-        ProblemImage image = new ProblemImage();
-        image.image = output;
         Calendar calendar = Calendar.getInstance();
-        image.title = (String.format("%1$tA %1$tb %1$td %1$tY at %1$tI:%1$tM %1$Tp", calendar));
+        ProblemImage image = new ProblemImage(this, output, String.format("%1$tA %1$tb %1$td %1$tY at %1$tI:%1$tM %1$Tp", calendar));
         mAdapter.popImage(image);
         Log.d(TAG, "added image");
     }
